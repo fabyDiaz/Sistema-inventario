@@ -25,8 +25,8 @@ public class ProductoServicio implements IProductoServicio{
     }
 
     @Override
-    public void guardarProdducto(Producto producto) {
-        this.productoRespositorio.save(producto);
+    public Producto guardarProdducto(Producto producto) {
+        return this.productoRespositorio.save(producto);
 
     }
 

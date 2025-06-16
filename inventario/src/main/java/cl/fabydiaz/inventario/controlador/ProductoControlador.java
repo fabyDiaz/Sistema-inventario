@@ -2,13 +2,12 @@ package cl.fabydiaz.inventario.controlador;
 
 import cl.fabydiaz.inventario.modelo.Producto;
 import cl.fabydiaz.inventario.servicio.ProductoServicio;
+import cl.fabydiaz.inventario.excepcion.RecursoNoEncontradoExcepcion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +27,23 @@ public class ProductoControlador {
         productos.forEach(producto->logger.info(producto.toString()));
         return productos;
     }
+
+    @PostMapping("/productos")
+    public Producto agregarProducto(@RequestBody Producto producto){
+        logger.info("Porducto a agregar: "+ producto);
+        return this.productoServicio.guardarProdducto(producto);
+    }
+
+    @GetMapping("/producto/{id}")
+    public ResponseEntity<Producto> obtenerProuctoPorId(@PathVariable int id){
+        Producto producto = this.productoServicio.buscarProductoPorId(id);
+        if(producto != null){
+            return ResponseEntity.ok(producto);
+        }else{
+            throw  new RecursoNoEncontradoExcepcion("No se encontró el producto");
+        }
+    }
+
 
 
 }
