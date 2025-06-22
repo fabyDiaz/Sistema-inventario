@@ -3,6 +3,7 @@ package cl.fabydiaz.inventario.controlador;
 import cl.fabydiaz.inventario.config.JwtUtil;
 import cl.fabydiaz.inventario.dto.UsuarioDTO;
 import cl.fabydiaz.inventario.dto.UsuarioRequestDTO;
+import cl.fabydiaz.inventario.modelo.Producto;
 import cl.fabydiaz.inventario.modelo.Usuario;
 import cl.fabydiaz.inventario.servicio.UsuarioDetailsService;
 import cl.fabydiaz.inventario.servicio.UsuarioServicio;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("inventario-app/auth")
@@ -65,6 +67,7 @@ public class UsuarioController {
                     .body(Collections.singletonMap("error", "Credenciales inválidas"));
         }
     }
+
 
 
 }
