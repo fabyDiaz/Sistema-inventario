@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("inventario-app") //http://localhost:8080/inventario-app)
-@CrossOrigin(value="http://localhost:4200") //puerto por defalut de angular
+//@CrossOrigin(value="http://localhost:4200") //puerto por defalut de angular
 public class ProductoControlador {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductoControlador.class);
@@ -31,7 +31,7 @@ public class ProductoControlador {
     @PostMapping("/productos")
     public Producto agregarProducto(@RequestBody Producto producto){
         logger.info("Porducto a agregar: "+ producto);
-        return this.productoServicio.guardarProdducto(producto);
+        return this.productoServicio.guardarProducto(producto);
     }
 
     @GetMapping("/producto/{id}")
