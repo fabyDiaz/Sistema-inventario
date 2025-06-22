@@ -1,5 +1,6 @@
 package cl.fabydiaz.inventario.servicio;
 
+import cl.fabydiaz.inventario.dto.UsuarioDTO;
 import cl.fabydiaz.inventario.modelo.Usuario;
 import cl.fabydiaz.inventario.repositorio.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,15 @@ public class UsuarioServicio implements IUsuarioServicio{
 
 
     @Override
-    public Usuario guardarUsuario(Usuario usuario) {
+    public UsuarioDTO guardarUsuario(Usuario usuario) {
         String contrasenaEncriptada = passwordEncoder.encode(usuario.getContrasena());
         usuario.setContrasena(contrasenaEncriptada);
-        return usuarioRepositorio.save(usuario);
+        Usuario usuarioGuardado =  usuarioRepositorio.save(usuario);
+
+        return UsuarioDTO.builder()
+                .idUsuario(usuarioGuardado.getIdUsuario())
+                .usuario(usuarioGuardado.getUsuario())
+                .email(usuarioGuardado.getEmail())
+                .build();
     }
 }

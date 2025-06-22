@@ -1,8 +1,9 @@
 package cl.fabydiaz.inventario.servicio;
 
+import cl.fabydiaz.inventario.dto.UsuarioDTO;
 import cl.fabydiaz.inventario.modelo.Usuario;
 
 public interface IUsuarioServicio {
 
-    Usuario guardarUsuario(Usuario usuario);
+    UsuarioDTO guardarUsuario(Usuario usuario);
 }
