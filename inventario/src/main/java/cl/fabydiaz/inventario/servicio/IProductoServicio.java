@@ -10,8 +10,9 @@ public interface IProductoServicio {
 
     List<Producto> listarProductos();
     List<ProductoDTO> obtenerProductosDelUsuarioAutenticado(Authentication authentication);
-    Producto buscarProductoPorId(Integer idProduct);
+    ProductoDTO buscarProductoPorId(Integer idProduct);
     Producto guardarProducto(Producto producto);
     ProductoDTO guardarProductoParaUsuarioAutenticado(Producto producto, Authentication authentication);
-    void eliminarProductPorId(Integer idProducto);
+    void eliminarProductPorId(Integer idProducto,Authentication authentication);
+    Producto actualizarProducto(Integer idProducto, Producto productoRecibido);
 }

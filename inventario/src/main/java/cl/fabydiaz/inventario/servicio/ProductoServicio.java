@@ -2,11 +2,13 @@ package cl.fabydiaz.inventario.servicio;
 
 import cl.fabydiaz.inventario.dto.ProductoDTO;
 import cl.fabydiaz.inventario.dto.UsuarioDTO;
+import cl.fabydiaz.inventario.excepcion.RecursoNoEncontradoExcepcion;
 import cl.fabydiaz.inventario.modelo.Producto;
 import cl.fabydiaz.inventario.modelo.Usuario;
 import cl.fabydiaz.inventario.repositorio.ProductoRespositorio;
 import cl.fabydiaz.inventario.repositorio.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -47,9 +49,17 @@ public class ProductoServicio implements IProductoServicio{
 
 
     @Override
-    public Producto buscarProductoPorId(Integer idProducto) {
-        Producto producto = this.productoRepositorio.findById(idProducto).orElse(null);
-        return producto;
+    public ProductoDTO buscarProductoPorId(Integer idProducto) {
+        Producto productoEncontrado = this.productoRepositorio.findById(idProducto).
+                orElseThrow(() -> new RecursoNoEncontradoExcepcion("Producto no encontrado con ID: " + idProducto));
+
+        return ProductoDTO.builder()
+                .IdProducto(productoEncontrado.getIdProducto())
+                .descripcion(productoEncontrado.getDescripcion())
+                .precio(productoEncontrado.getPrecio())
+                .existencias(productoEncontrado.getExistencias())
+                .usuarioId(productoEncontrado.getUsuario().getIdUsuario())
+                .build();
     }
 
     @Override
@@ -82,7 +92,31 @@ public class ProductoServicio implements IProductoServicio{
 
 
     @Override
-    public void eliminarProductPorId(Integer idProducto) {
-        this.productoRepositorio.deleteById(idProducto);
+    public void eliminarProductPorId(Integer idProducto, Authentication authentication) {
+        String nombreUsuario = authentication.getName();
+
+        Usuario usuario = usuarioRepositorio.findByNombreUsuario(nombreUsuario)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        Producto producto = productoRepositorio.findById(idProducto)
+                .orElseThrow(() -> new RecursoNoEncontradoExcepcion("Producto no encontrado con ID: " + idProducto));
+
+        // Validar que el producto pertenezca al usuario autenticado
+        if (!producto.getUsuario().getIdUsuario().equals(usuario.getIdUsuario())) {
+            throw new AccessDeniedException("No tienes permiso para eliminar este producto");
+        }
+
+        this.productoRepositorio.deleteById(producto.getIdProducto());
+    }
+
+    @Override
+    public Producto actualizarProducto(Integer idProducto, Producto productoRecibido){
+        Producto producto = this.productoRepositorio.findById(idProducto).
+                orElseThrow(() -> new RecursoNoEncontradoExcepcion("Producto no encontrado con ID: " + idProducto));
+        producto.setDescripcion(productoRecibido.getDescripcion());
+        producto.setExistencias(productoRecibido.getExistencias());
+        producto.setPrecio(productoRecibido.getPrecio());
+
+        return producto;
     }
 }

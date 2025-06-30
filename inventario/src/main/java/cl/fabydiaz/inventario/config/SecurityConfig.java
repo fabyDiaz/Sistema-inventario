@@ -41,7 +41,7 @@ public class SecurityConfig{
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
-                    http.requestMatchers(HttpMethod.GET, "/inventario-app/productos").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/inventario-app/producto/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/inventario-app/auth/nuevo-usuario").permitAll();
                     http.requestMatchers(HttpMethod.POST, "inventario-app/auth/login").permitAll();
                     http.anyRequest().authenticated();

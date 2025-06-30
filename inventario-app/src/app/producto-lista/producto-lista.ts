@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Producto } from '../producto';
 import { ProductoServicio } from '../producto-servicio';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-producto-lista',
@@ -11,13 +12,15 @@ export class ProductoLista {
   productos: Producto[];
 
   private productoServicio = inject(ProductoServicio);
+  private enrutador = inject(Router)
+
 
   ngOnInit(){
     //cargar los productos 
     this.obtenerProductos();
   }
   private obtenerProductos(): void{
-    this.productoServicio.obtenerProductosLista().subscribe(
+    this.productoServicio.obtenerMisProductos().subscribe(
       {
         next: (datos) => {
           this.productos = datos;
@@ -27,5 +30,16 @@ export class ProductoLista {
         }
       }
     );
+  }
+
+  editarProducto(id: number){
+    this.enrutador.navigate(['editar-producto', id]);
+  }
+
+  eliminarProducto(id:number){
+    this.productoServicio.eliminarProducto(id).subscribe({
+      next: (datos) => this.obtenerProductos(),
+      error: (errores) => console.log(errores)
+    });
   }
 }

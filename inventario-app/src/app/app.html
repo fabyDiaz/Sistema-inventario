@@ -24,8 +24,8 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <!-- Left side menu items -->
         <div class="navbar-nav me-auto custom-nav-items">
-          <a class="nav-link custom-nav-link" routerLink="productos" routerLinkActive="active">Productos</a>
-          <a class="nav-link custom-nav-link" routerLink="agregar-producto" routerLinkActive="active">Inventario</a>
+          <a class="nav-link custom-nav-link" routerLink="productos" routerLinkActive="active">Inventario</a>
+          <a class="nav-link custom-nav-link" routerLink="agregar-producto" routerLinkActive="active">Agregar Producto</a>
           <a class="nav-link custom-nav-link" routerLink="clientes" routerLinkActive="active">Clientes</a>
           <a class="nav-link custom-nav-link" routerLink="reportes" routerLinkActive="active">Reportes</a>
         </div>
@@ -33,10 +33,21 @@
         <!-- Right side auth buttons -->
         <div class="navbar-nav custom-auth-section">
           <a class="nav-link custom-nav-link" routerLink="agregar-usuario" routerLinkActive="active">Crear cuenta</a>
-          <a class="nav-link custom-login-btn" routerLink="iniciar-sesion" routerLinkActive="active">
+
+          @if (!autenticado) {
+            <a class="nav-link custom-login-btn" routerLink="iniciar-sesion" routerLinkActive="active">
             <i class="fas fa-user me-1"></i>
             Iniciar sesión
           </a>
+          }
+
+          @if (autenticado) {
+            <a (click)="cerrarSesion()" class="nav-link custom-login-btn" routerLink="iniciar-sesion" routerLinkActive="active">
+            <i class="fas fa-user me-1"></i>
+            Cerrar sesión
+          </a>
+          }
+          
         </div>
       </div>
     </div>

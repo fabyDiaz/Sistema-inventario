@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("inventario-app") //http://localhost:8080/inventario-app)
@@ -50,13 +52,24 @@ public class ProductoControlador {
     }
 
     @GetMapping("/producto/{id}")
-    public ResponseEntity<Producto> obtenerProuctoPorId(@PathVariable Integer id){
-        Producto producto = this.productoServicio.buscarProductoPorId(id);
-        if(producto != null){
-            return ResponseEntity.ok(producto);
-        }else{
-            throw  new RecursoNoEncontradoExcepcion("No se encontró el producto");
-        }
+    public ResponseEntity<ProductoDTO> obtenerProuctoPorId(@PathVariable Integer id){
+        ProductoDTO producto = productoServicio.buscarProductoPorId(id);
+        return ResponseEntity.ok(producto);
+    }
+
+    @PutMapping("/producto/{id}")
+    public ResponseEntity<ProductoDTO> actualizarProducto(@PathVariable Integer id, @RequestBody Producto productoRecibido, Authentication authentication){
+        Producto producto = productoServicio.actualizarProducto(id, productoRecibido);
+        ProductoDTO productoActualizado = this.productoServicio.guardarProductoParaUsuarioAutenticado(producto, authentication);
+        return ResponseEntity.ok(productoActualizado);
+    }
+    @DeleteMapping("/producto/{id}")
+    public ResponseEntity<Map<String, Boolean>> eliminarProducto(@PathVariable Integer id,Authentication authentication){
+        productoServicio.eliminarProductPorId(id, authentication);
+        Map<String, Boolean> respuesta = new HashMap<>();
+        respuesta.put("producto eliminado", Boolean.TRUE);
+        return ResponseEntity.ok(respuesta);
+
     }
 
 

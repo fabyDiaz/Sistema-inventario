@@ -48,5 +48,4 @@ export class UsuarioServicio {
     return !!this.obtenerToken();
   }
 
-
 }
