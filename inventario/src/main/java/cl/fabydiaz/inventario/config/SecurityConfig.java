@@ -43,7 +43,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.GET, "/inventario-app/producto/**").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/inventario-app/auth/nuevo-usuario").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "inventario-app/auth/login").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/inventario-app/auth/login").permitAll();
                     http.anyRequest().authenticated();
                 })
                 .authenticationProvider(authenticationProvider())
@@ -77,7 +77,11 @@ public class SecurityConfig{
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:4200",     // Angular
+                "http://10.0.2.2:8080",      // Emulador Android
+                "http://192.168.1.10:8080"   // Dispositivo real en la red
+        ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // opcional si manejas cookies o auth
