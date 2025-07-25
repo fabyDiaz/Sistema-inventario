@@ -15,8 +15,13 @@ export class AgregarProducto {
 
   private productoServicio = inject(ProductoServicio);
   private enrutador = inject(Router);
+  
 
   onSubmit(){
+    if (!this.producto.descripcion || this.producto.precio <= 0) {
+      alert("Debes completar los campos correctamente");
+      return;
+    }
     this.guardarProducto();
   }
 

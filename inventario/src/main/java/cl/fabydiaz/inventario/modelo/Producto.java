@@ -1,9 +1,6 @@
 package cl.fabydiaz.inventario.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +16,7 @@ public class Producto {
     private String descripcion;
     private Double precio;
     private Integer existencias;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id") // nombre de la columna FK
+    private Usuario usuario;
 }
