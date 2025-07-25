@@ -36,7 +36,7 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .cors(Customizer.withDefaults()) // ✅ <--- esto activa CORS con el bean de arriba
+                .cors(Customizer.withDefaults()) //  <--- esto activa CORS con el bean de arriba
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
